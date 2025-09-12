@@ -1,0 +1,43 @@
+<!--DESAFIO DO DIA-->
+<!--12-09-12-->
+<!--TESTE DE LOGICA-->
+
+<!--Caso A - ARARA
+- Entrada original: arara
+- Após a limpea:    arara (len=5)
+
+Tabela de Interação (a = esquerda   | b = (direita) 
+iter  |  a  |  s[a]  |  b  |  s[b]  |  comparação  | ação
+------+-----+--------+-----+--------+--------------+---------------
+ 0    |  0   |   a   |  4  |    a   |    igual     |  a=+1, b=-1
+ 1    |  1   |   r    |  3  |   r   |    igual     |  a=+1, b=-1
+
+ 🆗 PALINDROMO (CORRETO)
+-->
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head><meta charset="utf-8"><title>Palíndromos</title></head>
+    <body style="font:16px system-ui;margin:20px">
+        <h3>Frases/números ou lista (vírgulas/linhas)</h3>
+        <textarea id="i" style="width:100%;height:120px"
+            placeholder="arara, radar, 121&#10;Socorram-me subi no ônibus em Marrocos"></textarea>
+        <p><button onclick="go()">Verificar</button></p>
+        <pre id="o"></pre>
+        <script>
+            const clean = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+            const isP = s => { s = clean(s); for (let a=0,b=s.length-1; a<b; a++,b--) if (s[a]!==s[b]) return [false,s]; return [true,s]; };
+          
+            const OK = '<span style="color:#16a34a;font-weight:700">true</span>';   
+            const NO = '<span style="color:#dc2626;font-weight:700">false</span>';  
+            const esc = s => s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+          
+            function go(){
+              let arr = (i.value||'').split(/[,;\n]+/).map(s=>s.trim()).filter(Boolean), pals=[];
+              if(!arr.length){ o.textContent='Digite algo.'; return; }
+              const lines = arr.map(x => { let [r,p]=isP(x); if(r) pals.push(x); return `${r?OK:NO} ${esc(x)} → ${esc(p)}`; });
+              o.innerHTML = lines.join('<br>') + '<br>—<br>Palíndromos: ' + (pals.length ? esc(pals.join(', ')) : 'nenhum');
+            }
+          </script>
+
+    </body>
+</html>
